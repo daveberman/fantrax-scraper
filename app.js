@@ -1,12 +1,8 @@
-var Echo = require('./api/echo');
-var NestApi = require('./api/nest');
-var HueApi = require('./api/hue');
-var myEcho = new Echo();
-myEcho.apis.push(new NestApi());
-myEcho.apis.push(new HueApi());
+var Fantrax = require('./api');
+var myFantrax = new Fantrax();
 
 setInterval(function() {
-  myEcho.fetchTasks();
+  myFantrax.fetchData();
 }, 1500);
 
 //login
