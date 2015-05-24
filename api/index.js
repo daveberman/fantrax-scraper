@@ -1,13 +1,11 @@
-var Echo = function() {
+var Fantrax = function() {
   var self = this;
   self.credentials = require('./.credentials');
-  self.domain = 'https://pitangui.amazon.com';
-  self.tasksToFetch = 100;
+  self.domain = 'https://www.fantrax.com/login.go?loginMsgId=b';
   self.apis = [];
-  self.tasks = [];
 };
 
-Echo.prototype.request = function(api, method, params, data, callback) {
+Fantrax.prototype.request = function(api, method, params, data, callback) {
   var self = this;
   var url = '';
   url += self.domain;
@@ -44,17 +42,17 @@ Echo.prototype.request = function(api, method, params, data, callback) {
   });
 };
 
-Echo.prototype.get = function(api, params, callback) {
+Fantrax.prototype.get = function(api, params, callback) {
   var self = this;
   self.request(api, 'GET', params, null, callback);
 };
 
-Echo.prototype.put = function(api, params, data, callback) {
+Fantrax.prototype.put = function(api, params, data, callback) {
   var self = this;
   self.request(api, 'PUT', params, data, callback);
 };
 
-Echo.prototype.fetchTasks = function() {
+Fantrax.prototype.fetchData = function() {
   var self = this;
   self.busy = true;
   self.get('todos', {
@@ -74,7 +72,7 @@ Echo.prototype.fetchTasks = function() {
   });
 };
 
-Echo.prototype.parseTasks = function() {
+Fantrax.prototype.parseData = function() {
   var self = this;
   console.log('%d tasks found.', self.tasks.length);
 
@@ -88,25 +86,7 @@ Echo.prototype.parseTasks = function() {
     }
   }
 
-  self.cleanupTasks(tasks);
 };
 
-Echo.prototype.cleanupTasks = function(tasks) {
-  var self = this;
 
-  var cleanup = tasks.filter(function(task) {
-    return task.executed;
-  });
-
-  for(var i in cleanup) {
-    var task = cleanup[i];
-    task.deleted = true;
-    delete task.executed;
-    console.log('Deleting: %s', task.text);
-    self.put('todos/' + task.itemId, null, task, function(res) {
-      // TODO maybe put something here
-    });
-  }
-};
-
-module.exports = Echo;
+module.exports = Fantrax;
